@@ -1,20 +1,24 @@
+"""Exercício para a disciplina de testes automatizados"""
+
+from time import sleep
 import pathlib
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+# from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver import ChromeOptions
-from time import sleep
+
 
 def test_automacao():
+    """Rotina principal"""
     # Copia o caminho do diretório atual
     diretorio = pathlib.Path(__file__).parent.resolve()
 
     # Ajusta Opções para carregar o chrome
     opcoes_chrome = ChromeOptions()
     # opcoes_chrome.add_argument("--headless")
-    opcoes_chrome.add_argument("--no-sandbox")
-    driver = webdriver.Chrome(options = opcoes_chrome)
+    opcoes_chrome.add_argument(" --no-sandbox ")
+    driver = webdriver.Chrome(options=opcoes_chrome)
 
     # Abre o HTML
     driver.get(f"file://{diretorio}/html_exercicio.html")
@@ -25,13 +29,14 @@ def test_automacao():
 
     # Aguarda até que o campo não esteja mais vazio
     WebDriverWait(driver, 10).until(
-        lambda d: d.find_element(By.ID, "my-value").get_attribute("textContent") != ""
+        lambda d: d.find_element(By.ID, "my-value")
+        .get_attribute("textContent") != ""
     )
 
     # Identifica o campo que contém o código gerado
     codigo = driver.find_element(By.ID, "my-value")
-    
-    # Identifica o campo de entrada 
+
+    # Identifica o campo de entrada
     entrada = driver.find_element(By.ID, "input")
     entrada.clear()   # limpa o campo
     entrada.send_keys(codigo.text)    # escreve o codigo gerado
@@ -53,4 +58,3 @@ def test_automacao():
     sleep(5)    # pausa para ver o resultado
 
     driver.quit()   # fecha o navegador
-
